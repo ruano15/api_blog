@@ -1,0 +1,13 @@
+//bibliotecas js
+npm install --save express
+npm install --save nodemon
+npm install --save mysql
+npm install --save body-parser
+npm install --save express-handlebars
+
+//mysql
+create table user (id int not null auto_increment,
+primary key(id), name varchar(90) not null,
+user varchar(90) not null,
+email varchar(90) not null,
+password varchar(90) not null);
