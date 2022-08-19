@@ -23,6 +23,11 @@ app.set('view engine', 'handlebars');
 
 //Routes
 app.get("/", function(req,res){res.render('index');})
+app.get("/cadastro", function(req, res){res.render('cadastro')})
+app.post("/controllerForm", urlEncodeParser, function(req, res){
+    sql.query("insert into user values (?,?,?,?,?)", [req.body.id, req.body.name, req.body.user, req.body.email, req.body.password]);
+    res.render('controllerForm');
+})
 
 //Start Server
 app.listen(3000, function(req, res){
