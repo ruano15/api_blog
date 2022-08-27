@@ -1,0 +1,13 @@
+table{
+    width: 100%;
+    text-align: center;
+}
+table td{
+    width: 25%;
+}
+table tr:first-child{
+    background: black;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 15px;
+}

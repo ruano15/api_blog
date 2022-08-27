@@ -1,6 +1,6 @@
 const express = require ('express')
 const bodyparser = require ('body-parser')
-const mysql = require ('mysql')
+const mysql = require ('mysql2')
 const handlebars = require ('express-handlebars')
 
 const app = express();
@@ -25,8 +25,18 @@ app.set('view engine', 'handlebars');
 app.get("/", function(req,res){res.render('index');})
 app.get("/cadastro", function(req, res){res.render('cadastro')})
 app.post("/controllerForm", urlEncodeParser, function(req, res){
-    sql.query("insert into user values (?,?,?,?,?)", [req.body.id, req.body.name, req.body.user, req.body.email, req.body.password]);
-    res.render('controllerForm');
+    try{
+    sql.query('SELECT email FROM user WHERE EXISTS (SELECT email FROM user WHERE email =?)',[req.body.email], function(err, result){
+    if(result == ''){
+        sql.query('insert into user values (?,?,?,?,?)', [req.body.id, req.body.name, req.body.user, req.body.email, req.body.password])
+        res.render('controllerForm')
+    }else{
+        res.render('erro')
+    } 
+    })
+    }catch{
+        res.render()
+    }
 })
 
 //Start Server
