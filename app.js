@@ -35,7 +35,7 @@ app.post("/controllerForm", urlEncodeParser, function(req, res){
         var criptografar = bcrypt.hashSync(req.body.password, salt)
         sql.query('insert into user values (?,?,?,?,?)', [req.body.id, req.body.name, req.body.user, req.body.email, criptografar])
         res.render('controllerForm')
-        console.log(criptografar)
+        console.log(criptografar, req.body.password)
     }else{
         res.render('erro')}
     })
@@ -43,6 +43,7 @@ app.post("/controllerForm", urlEncodeParser, function(req, res){
         res.render()
     }
 })
+app.get("/login", function(req,res){res.render('login');})
 
 //Start Server
 app.listen(3000, function(req, res){
