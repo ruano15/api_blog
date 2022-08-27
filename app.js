@@ -2,8 +2,12 @@ const express = require ('express')
 const bodyparser = require ('body-parser')
 const mysql = require ('mysql2')
 const handlebars = require ('express-handlebars')
+const bcrypt = require('bcrypt')
 
 const app = express();
+
+const salt = bcrypt.genSaltSync(10)
+
 const urlEncodeParser = bodyparser.urlencoded({extended:false});
 const sql = mysql.createConnection({
     host: 'localHost',
@@ -28,11 +32,12 @@ app.post("/controllerForm", urlEncodeParser, function(req, res){
     try{
     sql.query('SELECT email FROM user WHERE EXISTS (SELECT email FROM user WHERE email =?)',[req.body.email], function(err, result){
     if(result == ''){
-        sql.query('insert into user values (?,?,?,?,?)', [req.body.id, req.body.name, req.body.user, req.body.email, req.body.password])
+        var criptografar = bcrypt.hashSync(req.body.password, salt)
+        sql.query('insert into user values (?,?,?,?,?)', [req.body.id, req.body.name, req.body.user, req.body.email, criptografar])
         res.render('controllerForm')
+        console.log(criptografar)
     }else{
-        res.render('erro')
-    } 
+        res.render('erro')}
     })
     }catch{
         res.render()
